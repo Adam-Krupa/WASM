@@ -10,7 +10,7 @@ renderer.outputColorSpace = THREE.SRGBColorSpace;
 const width = canvas.clientWidth;
 const height = canvas.clientHeight;
 renderer.setSize(width, height);
-renderer.setClearColor(0x000000);
+renderer.setClearColor(0xFFFFFF);
 renderer.setPixelRatio(window.devicePixelRatio);
 
 renderer.shadowMap.enabled = true;
@@ -19,7 +19,8 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
-
+// const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.5); 
+// scene.add(ambientLight); 
 const camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
 camera.position.set(4, 5, 11);
 
@@ -34,10 +35,10 @@ controls.autoRotate = false;
 controls.target = new THREE.Vector3(0, 1, 0);
 controls.update();
 
-const groundGeometry = new THREE.PlaneGeometry(20, 20, 32, 32);
+const groundGeometry = new THREE.CircleGeometry(5,32);
 groundGeometry.rotateX(-Math.PI / 2);
-const groundMaterial = new THREE.MeshStandardMaterial({
-  color: 0x555555,
+const groundMaterial = new THREE.MeshPhongMaterial({
+  color: 0xFFFFFF,
   side: THREE.DoubleSide
 });
 const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
@@ -45,7 +46,7 @@ groundMesh.castShadow = false;
 groundMesh.receiveShadow = true;
 scene.add(groundMesh);
 
-const spotLight = new THREE.SpotLight(0xffffff, 3000, 100, 0.22, 1);
+const spotLight = new THREE.SpotLight(0x444444, 600, 100, 0.22, 0.5 );
 spotLight.position.set(0, 25, 0);
 spotLight.castShadow = true;
 spotLight.shadow.bias = -0.0001;
