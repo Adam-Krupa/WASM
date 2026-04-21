@@ -2,10 +2,14 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-renderer.setSize(window.innerWidth, window.innerHeight);
+const canvas = document.querySelector("#myCanvas");
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+const width = canvas.clientWidth;
+const height = canvas.clientHeight;
+renderer.setSize(width, height);
 renderer.setClearColor(0x000000);
 renderer.setPixelRatio(window.devicePixelRatio);
 
@@ -16,7 +20,7 @@ document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 
-const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
+const camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
 camera.position.set(4, 5, 11);
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -70,9 +74,9 @@ loader.load('fiat500.glb', (gltf) => {
 });
 
 window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.aspect = width / height;
   camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(width, height);
 });
 
 function animate() {
