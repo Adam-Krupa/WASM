@@ -1,17 +1,33 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CarFinder - Znajdź swoje wymarzone auto</title>
-  <meta name="description" content="Wyszukiwarka samochodów z interaktywnym podglądem 3D">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CarFinder - Znajdź swoje wymarzone auto</title>
+    <meta
+      name="description"
+      content="Wyszukiwarka samochodów z interaktywnym podglądem 3D"
+    />
+
+    <!-- FIX: Pozbycie się błędu favicon.ico za pomocą ikony emoji samochodu -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚗</text></svg>"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <script
+      async
+      src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"
+    ></script>
     <script type="importmap">
       {
         "imports": {
@@ -20,69 +36,110 @@
         }
       }
     </script>
-  <!-- Header -->
-  <header class="header">
-    <div class="header-container">
-      <a href="#" class="logo">
-        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/>
-          <circle cx="7" cy="17" r="2"/>
-          <path d="M9 17h6"/>
-          <circle cx="17" cy="17" r="2"/>
-        </svg>
-        <span>CarFinder</span>
-      </a>
-      
-      <nav class="nav">
-        <a href="#" class="nav-link">Szukaj</a>
-        <a href="#" class="nav-link">Oferta</a>
-        <a href="#" class="nav-link">O nas</a>
-        <a href="#" class="nav-link">Kontakt</a>
-      </nav>
-      
-      <button class="login-btn">Zaloguj się</button>
-      
-      <button class="mobile-menu-btn" id="mobileMenuBtn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="4" x2="20" y1="12" y2="12"/>
-          <line x1="4" x2="20" y1="6" y2="6"/>
-          <line x1="4" x2="20" y1="18" y2="18"/>
-        </svg>
-      </button>
-    </div>
-  </header>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-container">
+        <a href="#" class="logo">
+          <svg
+            class="logo-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"
+            />
+            <circle cx="7" cy="17" r="2" />
+            <path d="M9 17h6" />
+            <circle cx="17" cy="17" r="2" />
+          </svg>
+          <span>CarFinder</span>
+        </a>
 
-  <!-- Main Content -->
-  <main class="main">
-    <!-- Background Effects -->
-    <div class="bg-effects">
-      <div class="bg-glow bg-glow-1"></div>
-      <div class="bg-glow bg-glow-2"></div>
-    </div>
+        <nav class="nav">
+          <a href="#" class="nav-link">Szukaj</a>
+          <a href="#" class="nav-link">Oferta</a>
+          <a href="#" class="nav-link">O nas</a>
+          <a href="#" class="nav-link">Kontakt</a>
+        </nav>
 
-    <!-- Hero Section with Canvas -->
-    <section class="hero">
-      <h1 class="title">
-        <span class="title-gradient">CarFinder</span>
-      </h1>
-      <p class="subtitle">Znajdź swoje wymarzone auto</p>
-      
-      <!-- 3D Car Canvas Container -->
-      <div class="canvas-container">
-        <canvas id="car-canvas"></canvas>
+        <button class="login-btn">Zaloguj się</button>
+
+        <!-- FIX: Dodane dwie osobne ikony (Hamburger i Krzyżyk) -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+          <!-- Ikona Hamburgera -->
+          <svg
+            class="icon-hamburger"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="4" x2="20" y1="12" y2="12" />
+            <line x1="4" x2="20" y1="6" y2="6" />
+            <line x1="4" x2="20" y1="18" y2="18" />
+          </svg>
+          <!-- Ikona Zamknięcia (X) -->
+          <svg
+            class="icon-close"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
       </div>
-    </section>
+    </header>
 
-    <!-- Search Section -->
-    <section class="search-section">
-  <div class="search-container">
-    <div class="search-placeholder">
-      🔍 Wyszukiwarka (wkrótce)
-    </div>
-  </div>
-</section>
-</main>
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Background Effects -->
+      <div class="bg-effects">
+        <div class="bg-glow bg-glow-1"></div>
+        <div class="bg-glow bg-glow-2"></div>
+      </div>
 
-  <script type="module" src="./main.js"></script>
-</body>
+      <!-- Hero Section with Canvas -->
+      <section class="hero">
+        <h1 class="title">
+          <span class="title-gradient">CarFinder</span>
+        </h1>
+        <p class="subtitle">Znajdź swoje wymarzone auto</p>
+
+        <!-- WIELKIE NAPISY W TLE NADPISUJĄCE CANVAS -->
+        <div class="giant-text text-left">WYSZUKAJ</div>
+        <div class="giant-text text-right">SZUKASZ AUTA?</div>
+
+        <!-- 3D Car Canvas Container -->
+        <div class="canvas-container">
+          <canvas id="car-canvas"></canvas>
+        </div>
+      </section>
+
+      <!-- Search Section -->
+      <section class="search-section">
+        <div class="search-container">
+          <input
+            type="text"
+            id="searchInput"
+            class="search-input-real"
+            placeholder="Wyszukiwarka..."
+          />
+        </div>
+      </section>
+    </main>
+
+    <script src="./script.js"></script>
+    <script type="module" src="./main.js"></script>
+  </body>
 </html>
