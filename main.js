@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js'; // NOWE: Import DRACO
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 
@@ -49,7 +50,7 @@ groundMesh.receiveShadow = true;
 groundMesh.castShadow = false;
 scene.add(groundMesh);
 
-// Oświetlenie podstawowe (światła ładujemy od razu)
+// Oświetlenie podstawowe
 const ambientLight = new THREE.AmbientLight(0xEEEEEEEE, 0.1); 
 scene.add(ambientLight); 
 
@@ -71,28 +72,40 @@ scene.add(rimLight);
 
 
 // ==========================================
-// 2. RÓWNOLEGŁE, ASYNCHRONICZNE ŁADOWANIE ZASOBÓW
+// 2. KONFIGURACJA LOADERÓW (W TYM DRACO)
 // ==========================================
 const rgbeLoader = new RGBELoader();
-const gltfLoader = new GLTFLoader();
 
+// Konfiguracja DRACOLoadera - wskazujemy ścieżkę do dekoderów WebAssembly (wersja musi się zgadzać z Twoim importmap, czyli 0.163.0)
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath('https://unpkg.com/three@v0.163.0/examples/jsm/libs/draco/gltf/');
+
+// Konfiguracja GLTFLoadera
+const gltfLoader = new GLTFLoader();
+gltfLoader.setDRACOLoader(dracoLoader); // Podpinamy silnik DRACO do naszego głównego loadera
+
+
+// ==========================================
+// 3. RÓWNOLEGŁE ŁADOWANIE (ASYNC/AWAIT)
+// ==========================================
 async function initScene() {
   try {
-  
+    console.log('Rozpoczęcie pobierania zasobów (z użyciem DRACO)...');
     
-    // Promise.all sprawia, że pobieranie HDR i GLB startuje w tym samym momencie
+    // Obie operacje startują jednocześnie
     const [texture, gltf] = await Promise.all([
       rgbeLoader.loadAsync('studio1.hdr'),
       gltfLoader.loadAsync('fiat500.glb')
     ]);
 
+    console.log('Zasoby pobrane i zdekodowane. Budowanie sceny...');
 
-    // A. Konfiguracja środowiska HDR
+    // A. Środowisko
     texture.mapping = THREE.EquirectangularReflectionMapping;
     scene.environment = texture;
     scene.environmentRotation = new THREE.Euler(0, Math.PI / 2, 0);
 
-    // B. Konfiguracja modelu
+    // B. Model
     const mesh = gltf.scene;
 
     mesh.traverse((child) => {
@@ -112,14 +125,13 @@ async function initScene() {
           color: 0x88aaff,
           metalness: 0,
           roughness: 0,
-          transmission: 1, // prawdziwe szkło
+          transmission: 1, 
           transparent: true,
           opacity: 1,
           envMapIntensity: 1
         });
       }
-
-      // 🛞 KOŁA / OPONY
+      // 🛞 KOŁA
       else if (name.includes("nissan")) {
         child.material = new THREE.MeshStandardMaterial({
           color: 0x222222,
@@ -127,7 +139,6 @@ async function initScene() {
           roughness: 0.8
         });
       }
-      
       // HAMULCE
       else if(name.includes("brake")) {
         child.material = new THREE.MeshStandardMaterial({
@@ -136,7 +147,6 @@ async function initScene() {
           roughness: 0.8
         });
       }
-
       // 🚗 KAROSERIA
       else if (name.includes("body")) {
         child.material = new THREE.MeshPhysicalMaterial({
@@ -148,7 +158,6 @@ async function initScene() {
           envMapIntensity: 2
         });
       }
-
       // 🔩 RESZTA
       else {
         child.material = new THREE.MeshStandardMaterial({
@@ -166,18 +175,18 @@ async function initScene() {
     mesh.position.set(0, 0, 0);
     scene.add(mesh);
     
+    console.log('Model wyrenderowany pomyślnie!');
 
   } catch (error) {
     console.error('Wystąpił błąd podczas ładowania zasobów 3D:', error);
   }
 }
 
-// Odpalenie głównej funkcji asynchronicznej
 initScene();
 
 
 // ==========================================
-// 3. Pętla renderowania i responsywność
+// 4. Pętla renderowania i responsywność
 // ==========================================
 function updateSize() {
   const width = container.clientWidth;
