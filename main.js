@@ -3,11 +3,11 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 
-
+// ==========================================
+// 1. Inicjalizacja podstawowa
+// ==========================================
 const canvas = document.querySelector("#car-canvas");
 const container = document.querySelector(".canvas-container");
-
-// ... (Reszta kodu THREE.js - Renderer, Scene, Lights) ...
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, canvas, alpha: true });
 renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -23,21 +23,12 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 const scene = new THREE.Scene();
-const rgbeLoader = new RGBELoader();
 
-rgbeLoader.load('studio1.hdr', (texture) => {
-  texture.mapping = THREE.EquirectangularReflectionMapping;
-
-  scene.environment = texture; // 🔥 NAJWAŻNIEJSZE
-
-  // jeśli chcesz widzieć tło (opcjonalnie)
-  // scene.background = texture;
-});
-const ambientLight = new THREE.AmbientLight(0xEEEEEEEE, 0.1); 
-scene.add(ambientLight); 
+// Kamera
 const camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
 camera.position.set(4, 5, 11);
 
+// Kontrolki
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.enablePan = false;
@@ -49,135 +40,160 @@ controls.autoRotate = true;
 controls.target = new THREE.Vector3(0, 1, 0);
 controls.update();
 
+// Podłoże
 const groundGeometry = new THREE.CircleGeometry(5, 32);
 groundGeometry.rotateX(-Math.PI / 2);
-
-const groundMaterial = new THREE.ShadowMaterial({
-  opacity: 0.3
-});
-
+const groundMaterial = new THREE.ShadowMaterial({ opacity: 0.3 });
 const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
 groundMesh.receiveShadow = true; 
 groundMesh.castShadow = false;
-
 scene.add(groundMesh);
+
+// Oświetlenie podstawowe (światła ładujemy od razu)
+const ambientLight = new THREE.AmbientLight(0xEEEEEEEE, 0.1); 
+scene.add(ambientLight); 
 
 const keyLight = new THREE.SpotLight(0xffffff, 150, 50, 0.35, 0.5);
 keyLight.position.set(5, 10, 5);
-
 keyLight.castShadow = true;
 keyLight.shadow.mapSize.set(2048, 2048);
 keyLight.shadow.radius = 4; 
 keyLight.shadow.bias = -0.0005;
-
 scene.add(keyLight);
+
 const fillLight = new THREE.DirectionalLight(0xddeeff, 0.4);
 fillLight.position.set(-5, 5, -5);
 scene.add(fillLight);
+
 const rimLight = new THREE.DirectionalLight(0xEEEEEE, 0.6);
 rimLight.position.set(0, 5, -10);
 scene.add(rimLight);
 
-// =======================================================
-const loader = new GLTFLoader();
-loader.load('fiat500.glb', (gltf) => {
-  console.log('loading model');
-  const mesh = gltf.scene;
 
-mesh.traverse((child) => {
-  if (!child.isMesh) return;
+// ==========================================
+// 2. RÓWNOLEGŁE, ASYNCHRONICZNE ŁADOWANIE ZASOBÓW
+// ==========================================
+const rgbeLoader = new RGBELoader();
+const gltfLoader = new GLTFLoader();
 
-  const name = child.name.toLowerCase();
+async function initScene() {
+  try {
+  
+    
+    // Promise.all sprawia, że pobieranie HDR i GLB startuje w tym samym momencie
+    const [texture, gltf] = await Promise.all([
+      rgbeLoader.loadAsync('studio1.hdr'),
+      gltfLoader.loadAsync('fiat500.glb')
+    ]);
 
-  // 🪟 SZYBY
-  if (
-    name.includes("nissan_gtr_r35_nismo-007001") || 
-    name.includes("body_4") || 
-    name.includes("body_9") ||
-    name.includes("body_14") || 
-    name.includes("body_19")
-  ) {
-    child.material = new THREE.MeshPhysicalMaterial({
-      color: 0x88aaff,
-      metalness: 0,
-      roughness: 0,
-      transmission: 1, // 🔥 prawdziwe szkło
-      transparent: true,
-      opacity: 1,
-      envMapIntensity: 1
+
+    // A. Konfiguracja środowiska HDR
+    texture.mapping = THREE.EquirectangularReflectionMapping;
+    scene.environment = texture;
+    scene.environmentRotation = new THREE.Euler(0, Math.PI / 2, 0);
+
+    // B. Konfiguracja modelu
+    const mesh = gltf.scene;
+
+    mesh.traverse((child) => {
+      if (!child.isMesh) return;
+
+      const name = child.name.toLowerCase();
+
+      // 🪟 SZYBY
+      if (
+        name.includes("nissan_gtr_r35_nismo-007001") || 
+        name.includes("body_4") || 
+        name.includes("body_9") ||
+        name.includes("body_14") || 
+        name.includes("body_19")
+      ) {
+        child.material = new THREE.MeshPhysicalMaterial({
+          color: 0x88aaff,
+          metalness: 0,
+          roughness: 0,
+          transmission: 1, // prawdziwe szkło
+          transparent: true,
+          opacity: 1,
+          envMapIntensity: 1
+        });
+      }
+
+      // 🛞 KOŁA / OPONY
+      else if (name.includes("nissan")) {
+        child.material = new THREE.MeshStandardMaterial({
+          color: 0x222222,
+          metalness: 0.2,
+          roughness: 0.8
+        });
+      }
+      
+      // HAMULCE
+      else if(name.includes("brake")) {
+        child.material = new THREE.MeshStandardMaterial({
+          color: 0x666666,
+          metalness: 0.2,
+          roughness: 0.8
+        });
+      }
+
+      // 🚗 KAROSERIA
+      else if (name.includes("body")) {
+        child.material = new THREE.MeshPhysicalMaterial({
+          color: 0x242629,
+          metalness: 1,
+          roughness: 0.25,
+          clearcoat: 1,
+          clearcoatRoughness: 0.05,
+          envMapIntensity: 2
+        });
+      }
+
+      // 🔩 RESZTA
+      else {
+        child.material = new THREE.MeshStandardMaterial({
+          color: 0x888888,
+          metalness: 0.5,
+          roughness: 0.5,
+          envMapIntensity: 1
+        });
+      }
+
+      child.castShadow = true;
+      child.receiveShadow = true;
     });
+
+    mesh.position.set(0, 0, 0);
+    scene.add(mesh);
+    
+
+  } catch (error) {
+    console.error('Wystąpił błąd podczas ładowania zasobów 3D:', error);
   }
-
-  // 🛞 KOŁA / HAMULCE
-  else if (name.includes("nissan")) {
-    child.material = new THREE.MeshStandardMaterial({
-      color: 0x222222,
-      metalness: 0.2,
-      roughness: 0.8
-    });
-  }
-  else if(name.includes("brake"))
-  {
-      child.material = new THREE.MeshStandardMaterial({
-      color: 0x666666,
-      metalness: 0.2,
-      roughness: 0.8
-    });
-  }
-
-  // 🚗 KAROSERIA
-  else if (name.includes("body")) {
-    child.material = new THREE.MeshPhysicalMaterial({
-      color: 0x242629,
-      metalness: 1,
-      roughness: 0.25,
-      clearcoat: 1,
-      clearcoatRoughness: 0.05,
-      envMapIntensity: 2
-    });
-  }
-
-  // 🔩 RESZTA
-  else {
-    child.material = new THREE.MeshStandardMaterial({
-      color: 0x888888,
-      metalness: 0.5,
-      roughness: 0.5,
-      envMapIntensity: 1
-    });
-  }
-
-  child.castShadow = true;
-  child.receiveShadow = true;
-});
-
-  mesh.position.set(0, 0, 0);
-  scene.add(mesh);
-});
-scene.environmentRotation = new THREE.Euler(0, Math.PI / 2, 0);
-
-
-window.addEventListener('resize', () => {
-  camera.aspect = width / height;
-  camera.updateProjectionMatrix();
-  renderer.setSize(width, height);
-});
-
-function animate() {
-  requestAnimationFrame(animate);
-  controls.update();
-  renderer.render(scene, camera);
 }
+
+// Odpalenie głównej funkcji asynchronicznej
+initScene();
+
+
+// ==========================================
+// 3. Pętla renderowania i responsywność
+// ==========================================
 function updateSize() {
   const width = container.clientWidth;
   const height = container.clientHeight;
 
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
-
   renderer.setSize(width, height);
 }
-updateSize();
+
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
 
 window.addEventListener('resize', updateSize);
+updateSize();
 animate();
