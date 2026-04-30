@@ -330,7 +330,147 @@ body {
     font-weight: 600;
   }
 }
+/* =========================================
+   PODSTRONA WYSZUKIWARKI (searchTab.html)
+========================================= */
 
+.search-page-top {
+  padding: 8rem 1.5rem 4rem; /* Duży górny margines, by odsunąć od nagłówka */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+.search-page-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, var(--text-primary), var(--text-muted));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Sekcja Zygzaka */
+.zigzag-section {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1.5rem 6rem;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem; /* Odstęp między blokami w pionie */
+}
+
+.zigzag-item {
+  display: flex;
+  width: 100%;
+}
+
+.zigzag-item.left {
+  justify-content: flex-start;
+}
+
+.zigzag-item.right {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.zigzag-content {
+  max-width: 500px; /* Ogranicza szerokość tekstu, by stworzyć zygzak */
+  background: rgba(18, 18, 26, 0.5); /* Półprzezroczyste tło */
+  padding: 2.5rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+/* Delikatne podniesienie po najechaniu myszką */
+.zigzag-content:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* =========================================
+   ANIMACJE WYSUWANIA Z PASKA Z BOKU
+========================================= */
+.zigzag-item.left .zigzag-content {
+  border-left: 4px solid var(--neon-cyan);
+  /* Ukrywa cały środek karty, zostawiając tylko lewy pasek przed startem animacji */
+  clip-path: inset(0 100% 0 0);
+  animation: slideFromLeft 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+}
+
+.zigzag-item.right .zigzag-content {
+  border-right: 4px solid var(--neon-purple);
+  /* Ukrywa cały środek karty, zostawiając tylko prawy pasek przed startem animacji */
+  clip-path: inset(0 0 0 100%);
+  animation: slideFromRight 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+}
+
+/* Opóźnienia dla efektu kaskady (jeden po drugim) */
+.zigzag-item:nth-child(1) .zigzag-content { animation-delay: 0.1s; }
+.zigzag-item:nth-child(2) .zigzag-content { animation-delay: 0.3s; }
+.zigzag-item:nth-child(3) .zigzag-content { animation-delay: 0.5s; }
+
+/* Klatki kluczowe animacji */
+@keyframes slideFromLeft {
+  0% {
+    clip-path: inset(0 100% 0 0); /* Karta ścięta do zera */
+    transform: translateX(-20px); /* Lekko cofnięta w stronę paska */
+    opacity: 0;
+  }
+  100% {
+    clip-path: inset(0 0 0 0); /* Karta w pełni rozwinięta */
+    transform: translateX(0); /* Na swoim miejscu */
+    opacity: 1;
+  }
+}
+
+@keyframes slideFromRight {
+  0% {
+    clip-path: inset(0 0 0 100%);
+    transform: translateX(20px); 
+    opacity: 0;
+  }
+  100% {
+    clip-path: inset(0 0 0 0); 
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Responsywność Zygzaka na telefonach (sprowadzamy wszystko do jednej kolumny) */
+@media (max-width: 767px) {
+  .zigzag-section {
+    gap: 2rem;
+  }
+  
+  .zigzag-item.right {
+    justify-content: flex-start;
+    text-align: left;
+  }
+  
+  /* Na telefonach paski z boku przenosimy ZAWSZE na lewą stronę */
+  .zigzag-item.right .zigzag-content {
+    border-right: 1px solid var(--border-color);
+    border-left: 4px solid var(--neon-purple);
+    
+    /* Wymuszamy też animację wysuwania z lewej strony, by to miało sens */
+    clip-path: inset(0 100% 0 0);
+    animation: slideFromLeft 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+  }
+  
+  .search-page-title {
+    font-size: 2rem;
+  }
+}
 /* Tablety i w górę */
 @media (min-width: 768px) {
   .nav {
