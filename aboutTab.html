@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CarFinder - Znajdź swoje wymarzone auto</title>
-  <meta name="description" content="Wyszukiwarka samochodów z interaktywnym podglądem 3D">
+  <title>O nas - CarFinder</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚗</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,20 +11,6 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-    <script type="importmap">
-      {
-        "imports": {
-          "three": "https://unpkg.com/three@v0.163.0/build/three.module.js",
-          "three/addons/": "https://unpkg.com/three@v0.163.0/examples/jsm/"
-        }
-      }
-    </script>
-    <!-- Wymusza pobieranie modeli w tle -->
-    <link rel="preload" href="fiat500.glb" as="fetch" crossorigin="anonymous">
-    <link rel="preload" href="studio1.hdr" as="fetch" crossorigin="anonymous">
-
-  <!-- Header -->
   <header class="header">
     <div class="header-container">
       <a href="index.html" class="logo">
@@ -39,13 +24,11 @@
       </a>
       
       <nav class="nav">
-        <a href="index.html" class="nav-link" style="color: var(--text-primary);">Główna</a>
+        <a href="index.html" class="nav-link">Główna</a>
         <a href="searchTab.html" class="nav-link">Szukaj</a>
-        <a href="aboutTab.html" class="nav-link">O nas</a>
+        <a href="aboutTab.html" class="nav-link" style="color: var(--text-primary);">O nas</a>
         <a href="contactTab.html" class="nav-link">Kontakt</a>
       </nav>
-      
-      <!-- Przycisk logowania usunięty -->
       
       <button class="mobile-menu-btn" id="mobileMenuBtn">
         <svg class="icon-hamburger" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -61,38 +44,63 @@
     </div>
   </header>
 
-  <!-- Main Content -->
   <main class="main">
     <div class="bg-effects">
       <div class="bg-glow bg-glow-1"></div>
       <div class="bg-glow bg-glow-2"></div>
     </div>
 
-    <!-- Hero Section with Canvas -->
-    <section class="hero">
-      <h1 class="title">
-        <span class="title-gradient">CarFinder</span>
-      </h1>
-      <p class="subtitle">Znajdź swoje wymarzone auto</p>
-      
-      <!-- WIELKIE NAPISY -->
-      <div class="giant-text text-left">SPRAWDŹ</div>
-      <div class="giant-text text-right">SZUKASZ AUTA?</div>
-
-      <!-- 3D Car Canvas -->
-      <div class="canvas-container">
-        <canvas id="car-canvas"></canvas>
+    <!-- Sekcja tytułowa z wyszukiwarką -->
+    <section class="static-page-top">
+      <h1 class="page-title">Kim jesteśmy?</h1>
+      <p class="page-subtitle">Zmieniamy zasady gry na rynku motoryzacyjnym. Zero ukrytych wad, 100% innowacji.</p>
+      <div class="search-container" style="margin-top: 2.5rem;">
+        <input type="text" class="search-input-real" placeholder="Czego szukasz dzisiaj?">
       </div>
     </section>
 
-    <!-- Search Section -->
-    <section class="search-section">
-      <div class="search-container">
-        <input type="text" id="searchInput" class="search-input-real" placeholder="Wyszukiwarka...">
+    <!-- Karty wartości -->
+    <section class="about-grid-section">
+      <div class="about-grid">
+        <div class="about-card">
+          <div class="card-icon" style="color: var(--neon-cyan);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+          <h3>Pewność</h3>
+          <p>Weryfikujemy historię każdego pojazdu w naszej bazie. Eliminujemy ryzyko na każdym kroku.</p>
+        </div>
+
+        <div class="about-card">
+          <div class="card-icon" style="color: var(--neon-purple);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+          </div>
+          <h3>Technologia 3D</h3>
+          <p>Dzięki naszym interaktywnym modelom 3D oglądasz samochody z każdej możliwej perspektywy.</p>
+        </div>
+
+        <div class="about-card">
+          <div class="card-icon" style="color: var(--neon-pink);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </div>
+          <h3>Społeczność</h3>
+          <p>Nasz zespół pasjonatów pomoże Ci na każdym kroku – od wyszukiwania po finalizację.</p>
+        </div>
       </div>
     </section>
     <!-- Footer -->
-  <!-- Footer -->
+<!-- Footer -->
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-brand">
@@ -116,6 +124,5 @@
   </main>
 
   <script src="./script.js"></script>
-  <script type="module" src="./main.js"></script>
 </body>
 </html>

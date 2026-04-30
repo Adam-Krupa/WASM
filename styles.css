@@ -1,4 +1,6 @@
-/* CSS Variables */
+/* ==========================================================================
+   1. ZMIENNE I RESET (Zmienne kolorów i podstawowe czyszczenie)
+   ========================================================================== */
 :root {
   --bg-dark: #0a0a0f;
   --bg-card: #12121a;
@@ -11,20 +13,21 @@
   --radius: 0.625rem;
 }
 
-/* Reset */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* Base */
 html {
   font-size: 16px;
   scroll-behavior: smooth;
   overflow-x: hidden;
 }
 
+/* ==========================================================================
+   2. TYPOGRAFIA I GLOBALNE STYLE (Tło, fonty i główny kontener)
+   ========================================================================== */
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--bg-dark);
@@ -34,7 +37,15 @@ body {
   overflow-x: hidden;
 }
 
-/* Header */
+.main {
+  position: relative;
+  min-height: 100vh;
+  padding-top: 5rem;
+}
+
+/* ==========================================================================
+   3. NAGŁÓWEK I NAWIGACJA (Header, Logo, Menu)
+   ========================================================================== */
 .header {
   position: fixed;
   top: 0;
@@ -55,6 +66,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative; /* Ważne do wyśrodkowania nawigacji */
 }
 
 .logo {
@@ -73,7 +85,6 @@ body {
   color: var(--neon-cyan);
 }
 
-/* MENU - bazowe style */
 .nav {
   display: flex;
   align-items: center;
@@ -92,65 +103,9 @@ body {
   color: var(--text-primary);
 }
 
-.login-btn {
-  display: none;
-  padding: 0.5rem 1rem;
-  background: transparent;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  color: var(--text-primary);
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.login-btn:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: var(--neon-cyan);
-}
-
-/* IKONY PRZYCISKU MENU */
-.mobile-menu-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  background: transparent;
-  border: none;
-  color: var(--text-primary);
-  cursor: pointer;
-  position: relative;
-  z-index: 60; /* Musi być wyższe niż 45, które ma .nav */
-}
-
-.mobile-menu-btn svg {
-  width: 1.5rem;
-  height: 1.5rem;
-  transition: opacity 0.3s ease;
-}
-
-.icon-close {
-  display: none; /* Ukryj domyślnie znak X */
-}
-
-/* Gdy menu jest otwarte (skrypt dodaje klasę menu-open do przycisku) */
-.mobile-menu-btn.menu-open .icon-hamburger {
-  display: none;
-}
-.mobile-menu-btn.menu-open .icon-close {
-  display: block;
-}
-
-/* Main */
-.main {
-  position: relative;
-  min-height: 100vh;
-  padding-top: 5rem;
-}
-
-/* Background Effects */
+/* ==========================================================================
+   4. EFEKTY TŁA (Mroczne, neonowe poświaty)
+   ========================================================================== */
 .bg-effects {
   position: fixed;
   inset: 0;
@@ -182,7 +137,62 @@ body {
   background: var(--neon-purple);
 }
 
-/* Hero Section */
+/* ==========================================================================
+   5. KOMPONENTY WIELOKROTNEGO UŻYTKU (Wyszukiwarka, Przyciski, Wielki Tekst)
+   ========================================================================== */
+.search-container {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.search-input-real {
+  width: 100%;
+  padding: 1.25rem 1.5rem;
+  background: rgba(255,255,255,0.05);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.search-input-real:focus {
+  border-color: var(--neon-cyan);
+}
+
+.giant-text {
+  position: absolute;
+  z-index: 10;
+  font-weight: 900;
+  font-size: clamp(3rem, 8vw, 9rem); 
+  white-space: nowrap;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.15);
+  pointer-events: none; 
+}
+
+.text-left {
+  top: 30%;
+  left: -5%;
+  transform: rotate(-35deg);
+  -webkit-text-stroke: 2px rgba(0, 212, 255, 0.3);
+}
+
+.text-right {
+  top: 40%;
+  right: -5%;
+  transform: rotate(35deg);
+  -webkit-text-stroke: 2px rgba(168, 85, 247, 0.3);
+}
+
+/* ==========================================================================
+   6. STRONA: GŁÓWNA (Hero, Canvas)
+   ========================================================================== */
 .hero {
   display: flex;
   flex-direction: column;
@@ -215,36 +225,6 @@ body {
   z-index: 20; 
 }
 
-/* =========================================
-   WIELKIE NAPISY TŁA
-========================================= */
-.giant-text {
-  position: absolute;
-  z-index: 10;
-  font-weight: 900;
-  font-size: clamp(3rem, 8vw, 9rem); 
-  white-space: nowrap;
-  text-transform: uppercase;
-  color: transparent;
-  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.15);
-  pointer-events: none; 
-}
-
-.text-left {
-  top: 30%;
-  left: -5%;
-  transform: rotate(-35deg);
-  -webkit-text-stroke: 2px rgba(0, 212, 255, 0.3);
-}
-
-.text-right {
-  top: 40%;
-  right: -5%;
-  transform: rotate(35deg);
-  -webkit-text-stroke: 2px rgba(168, 85, 247, 0.3);
-}
-
-/* Canvas */
 .canvas-container {
   position: relative;
   width: 100%;
@@ -252,10 +232,10 @@ body {
   height: 45vh; 
   overflow: hidden;
   z-index: 5;
-  background: rgba(0, 0, 0, 0.03);
-  /* border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: var(--radius); */
- /* margin-top: -2rem;  */
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius);
+  margin-top: -2rem; 
 }
 
 #car-canvas {
@@ -265,7 +245,6 @@ body {
   height: 100%;
 }
 
-/* Search */
 .search-section {
   padding: 1.5rem 1.5rem 4rem; 
   display: flex;
@@ -274,31 +253,359 @@ body {
   z-index: 10;
 }
 
-.search-container {
-  width: 100%;
-  max-width: 600px;
+/* ==========================================================================
+   7. STRONA: SZUKAJ / INFO O NAS / KONTAKT (Wspólne Nagłówki statyczne)
+   ========================================================================== */
+.search-page-top,
+.static-page-top {
+  padding: 8rem 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 10;
 }
 
-.search-input-real {
+.search-page-title,
+.page-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, var(--text-primary), var(--text-muted));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.page-subtitle {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   8. STRONA: SZUKAJ (Układ Zygzak, Animacje bocznego panelu)
+   ========================================================================== */
+.zigzag-section {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1.5rem 6rem;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem; 
+}
+
+.zigzag-item {
+  display: flex;
   width: 100%;
-  padding: 1.25rem 1.5rem;
-  background: rgba(255,255,255,0.05);
-  border: 2px solid var(--border-color);
+}
+
+.zigzag-item.left { justify-content: flex-start; }
+.zigzag-item.right { justify-content: flex-end; text-align: right; }
+
+.zigzag-content {
+  max-width: 500px; 
+  background: rgba(18, 18, 26, 0.5); 
+  padding: 2.5rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: border-color 0.3s ease;
+}
+
+.zigzag-content:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.zigzag-content h2 {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.zigzag-content p {
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+/* Animacje wysuwania */
+.zigzag-item.left .zigzag-content {
+  border-left: 4px solid var(--neon-cyan);
+  clip-path: inset(0 100% 0 0);
+  animation: slideFromLeft 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+}
+
+.zigzag-item.right .zigzag-content {
+  border-right: 4px solid var(--neon-purple);
+  clip-path: inset(0 0 0 100%);
+  animation: slideFromRight 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+}
+
+.zigzag-item:nth-child(1) .zigzag-content { animation-delay: 0.1s; }
+.zigzag-item:nth-child(2) .zigzag-content { animation-delay: 0.3s; }
+.zigzag-item:nth-child(3) .zigzag-content { animation-delay: 0.5s; }
+
+@keyframes slideFromLeft {
+  0% { clip-path: inset(0 100% 0 0); transform: translateX(-20px); opacity: 0; }
+  100% { clip-path: inset(0 0 0 0); transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideFromRight {
+  0% { clip-path: inset(0 0 0 100%); transform: translateX(20px); opacity: 0; }
+  100% { clip-path: inset(0 0 0 0); transform: translateX(0); opacity: 1; }
+}
+
+/* ==========================================================================
+   9. STRONA: O NAS (Układ Kart w Gridzie)
+   ========================================================================== */
+.about-grid-section {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 6rem;
+  position: relative;
+  z-index: 10;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.about-card {
+  background: rgba(18, 18, 26, 0.5);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 2.5rem 2rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.about-card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.card-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.75rem;
+  border-radius: 50%;
+}
+
+.about-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.about-card p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   10. STRONA: KONTAKT (Dane kontaktowe i Formularz)
+   ========================================================================== */
+.contact-section {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 6rem;
+  position: relative;
+  z-index: 10;
+}
+
+.contact-wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  background: rgba(18, 18, 26, 0.4);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.contact-info-panel {
+  padding: 3rem;
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(168, 85, 247, 0.05));
+  border-bottom: 1px solid var(--border-color);
+}
+
+.contact-info-panel h2 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+
+.contact-desc {
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.info-icon {
+  font-size: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.5rem;
+  border-radius: 50%;
+}
+
+.info-item strong {
+  display: block;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.info-item p {
+  color: var(--text-muted);
+}
+
+.contact-form-panel {
+  padding: 3rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.form-input, .form-textarea {
+  width: 100%;
+  padding: 1rem;
+  background: rgba(10, 10, 15, 0.6);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius);
   color: var(--text-primary);
-  font-size: 1.1rem;
+  font-family: inherit;
   outline: none;
-  transition: border-color 0.3s;
+  transition: all 0.3s ease;
 }
 
-.search-input-real:focus {
-  border-color: var(--neon-cyan);
+.form-input:focus, .form-textarea:focus {
+  border-color: var(--neon-purple);
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.2);
 }
 
-/* =========================================
-   RESPONSYWNOŚĆ I MENU HAMBURGEROWE
-========================================= */
+.form-textarea {
+  resize: vertical;
+  min-height: 150px;
+}
 
+.submit-btn {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+  border: none;
+  border-radius: var(--radius);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+}
+
+.submit-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   11. MEDIA QUERIES (Responsywność i Mobilne Menu Hamburgerowe)
+   ========================================================================== */
+
+/* IKONY PRZYCISKU MENU */
+.mobile-menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  position: relative;
+  z-index: 60; 
+}
+
+.mobile-menu-btn svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  transition: opacity 0.3s ease;
+}
+
+.icon-close { display: none; }
+.mobile-menu-btn.menu-open .icon-hamburger { display: none; }
+.mobile-menu-btn.menu-open .icon-close { display: block; }
+
+/* ==========================================================================
+   12. STOPKA (Footer) - Wersja zminimalizowana
+   ========================================================================== */
+.footer {
+  background: rgba(10, 10, 15, 0.8);
+  border-top: 1px solid var(--border-color);
+  /* Znacznie zmniejszone paddingi - było 4rem z góry, są 2rem */
+  padding: 2rem 1.5rem 1rem;
+  position: relative;
+  z-index: 10;
+  margin-top: auto; 
+}
+
+.footer-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.footer-desc {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin: 1rem auto 0;
+  max-width: 400px;
+}
+
+.footer-bottom {
+  max-width: 1280px;
+  /* Zmniejszony górny margines - było 3rem, jest 1.5rem */
+  margin: 1.5rem auto 0; 
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+/* Urządzenia Mobilne (max 767px) */
 @media (max-width: 767px) {
   .nav {
     display: flex;
@@ -315,210 +622,52 @@ body {
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     padding: 2rem;
-    
     transform: translateY(-100%);
     transition: transform 0.4s ease-in-out;
     z-index: 45; 
   }
 
-  .nav.nav-open {
-    transform: translateY(0);
-  }
+  .nav.nav-open { transform: translateY(0); }
+  .nav .nav-link { font-size: 1.5rem; font-weight: 600; }
   
-  .nav .nav-link {
-    font-size: 1.5rem;
-    font-weight: 600;
-  }
-}
-/* =========================================
-   PODSTRONA WYSZUKIWARKI (searchTab.html)
-========================================= */
-
-.search-page-top {
-  padding: 8rem 1.5rem 4rem; /* Duży górny margines, by odsunąć od nagłówka */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  position: relative;
-  z-index: 10;
-}
-
-.search-page-title {
-  font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 2rem;
-  background: linear-gradient(135deg, var(--text-primary), var(--text-muted));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Sekcja Zygzaka */
-.zigzag-section {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 1.5rem 6rem;
-  position: relative;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  gap: 4rem; /* Odstęp między blokami w pionie */
-}
-
-.zigzag-item {
-  display: flex;
-  width: 100%;
-}
-
-.zigzag-item.left {
-  justify-content: flex-start;
-}
-
-.zigzag-item.right {
-  justify-content: flex-end;
-  text-align: right;
-}
-
-.zigzag-content {
-  max-width: 500px; /* Ogranicza szerokość tekstu, by stworzyć zygzak */
-  background: rgba(18, 18, 26, 0.5); /* Półprzezroczyste tło */
-  padding: 2.5rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--border-color);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  transition: transform 0.3s ease, border-color 0.3s ease;
-}
-
-/* Delikatne podniesienie po najechaniu myszką */
-.zigzag-content:hover {
-  transform: translateY(-5px);
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
-/* =========================================
-   ANIMACJE WYSUWANIA Z PASKA Z BOKU
-========================================= */
-.zigzag-item.left .zigzag-content {
-  border-left: 4px solid var(--neon-cyan);
-  /* Ukrywa cały środek karty, zostawiając tylko lewy pasek przed startem animacji */
-  clip-path: inset(0 100% 0 0);
-  animation: slideFromLeft 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards;
-}
-
-.zigzag-item.right .zigzag-content {
-  border-right: 4px solid var(--neon-purple);
-  /* Ukrywa cały środek karty, zostawiając tylko prawy pasek przed startem animacji */
-  clip-path: inset(0 0 0 100%);
-  animation: slideFromRight 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards;
-}
-
-/* Opóźnienia dla efektu kaskady (jeden po drugim) */
-.zigzag-item:nth-child(1) .zigzag-content { animation-delay: 0.1s; }
-.zigzag-item:nth-child(2) .zigzag-content { animation-delay: 0.3s; }
-.zigzag-item:nth-child(3) .zigzag-content { animation-delay: 0.5s; }
-
-/* Klatki kluczowe animacji */
-@keyframes slideFromLeft {
-  0% {
-    clip-path: inset(0 100% 0 0); /* Karta ścięta do zera */
-    transform: translateX(-20px); /* Lekko cofnięta w stronę paska */
-    opacity: 0;
-  }
-  100% {
-    clip-path: inset(0 0 0 0); /* Karta w pełni rozwinięta */
-    transform: translateX(0); /* Na swoim miejscu */
-    opacity: 1;
-  }
-}
-
-@keyframes slideFromRight {
-  0% {
-    clip-path: inset(0 0 0 100%);
-    transform: translateX(20px); 
-    opacity: 0;
-  }
-  100% {
-    clip-path: inset(0 0 0 0); 
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-/* Responsywność Zygzaka na telefonach (sprowadzamy wszystko do jednej kolumny) */
-@media (max-width: 767px) {
-  .zigzag-section {
-    gap: 2rem;
-  }
-  
-  .zigzag-item.right {
-    justify-content: flex-start;
-    text-align: left;
-  }
-  
-  /* Na telefonach paski z boku przenosimy ZAWSZE na lewą stronę */
+  .zigzag-section { gap: 2rem; }
+  .zigzag-item.right { justify-content: flex-start; text-align: left; }
   .zigzag-item.right .zigzag-content {
     border-right: 1px solid var(--border-color);
     border-left: 4px solid var(--neon-purple);
-    
-    /* Wymuszamy też animację wysuwania z lewej strony, by to miało sens */
     clip-path: inset(0 100% 0 0);
     animation: slideFromLeft 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards;
   }
   
-  .search-page-title {
-    font-size: 2rem;
-  }
+  .search-page-title, .page-title { font-size: 2rem; }
 }
-/* Tablety i w górę */
+
+/* Tablety i w górę (min 768px) */
 @media (min-width: 768px) {
+  /* Absolute centrowanie nawigacji na Desktopie */
   .nav {
     display: flex;
     flex-direction: row; 
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
   
-  .login-btn {
-    display: block;
-  }
-  
-  .mobile-menu-btn {
-    display: none; 
-  }
-  
-  .title {
-    font-size: 3.5rem;
-  }
-  
-  .subtitle {
-    font-size: 1.25rem;
-  }
-  
-  .hero {
-    padding: 1rem 1rem;
-  }
-
-  .canvas-container {
-    height: 55vh; 
-    margin-top: -3rem; 
-  }
-
+  .mobile-menu-btn { display: none; }
+  .title { font-size: 3.5rem; }
+  .subtitle { font-size: 1.25rem; }
+  .hero { padding: 1rem 1rem; }
+  .canvas-container { height: 55vh; margin-top: -3rem; }
   .text-left { top: 25%; }
   .text-right { top: 35%; }
+
+  .contact-wrapper { grid-template-columns: 2fr 3fr; }
+  .contact-info-panel { border-bottom: none; border-right: 1px solid var(--border-color); }
 }
 
-/* Komputery Desktop */
+/* Komputery Desktop (min 1024px) */
 @media (min-width: 1024px) {
-  .title {
-    font-size: 4rem;
-  }
-  
-  .hero {
-    padding: 2rem 2rem;
-  }
-
-  .canvas-container {
-    height: 65vh; 
-    margin-top: -4rem; 
-  }
+  .title { font-size: 4rem; }
+  .hero { padding: 2rem 2rem; }
+  .canvas-container { height: 65vh; margin-top: -4rem; }
 }
